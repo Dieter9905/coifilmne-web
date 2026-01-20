@@ -38,7 +38,10 @@ function Login() {
       // Phát event để Navbar cập nhật
       window.dispatchEvent(new Event("userLoggedIn"));
       
-      navigate("/");
+      // Thêm delay nhỏ để đảm bảo localStorage đã cập nhật trước khi navigate
+      setTimeout(() => {
+        navigate("/");
+      }, 100);
     } catch (err) {
       // Xử lý các lỗi Firebase
       if (err.code === "auth/user-not-found") {

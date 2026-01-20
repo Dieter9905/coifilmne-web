@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useNavigate, Link } from "react-router-dom";
+import { NavLink, useNavigate, Link, useLocation } from "react-router-dom";
 import UserProfile from "./UserProfile";
 import logoImg from "../Images/logo.jpg";
 import "../Css/Navbar.css";
@@ -8,6 +8,7 @@ function Navbar() {
   const [query, setQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // Thêm này để detect route change
 
   // Hàm kiểm tra user
   const checkUser = () => {
@@ -20,9 +21,14 @@ function Navbar() {
   };
 
   useEffect(() => {
-    // Kiểm tra user đang login
+    // Kiểm tra user đang login lần đầu
     checkUser();
   }, []);
+
+  // Re-check user khi route thay đổi (quan trọng!)
+  useEffect(() => {
+    checkUser();
+  }, [location]);
 
   useEffect(() => {
     // Listen for storage changes (logout từ tab khác)

@@ -57,7 +57,7 @@ function Signup() {
       window.dispatchEvent(new Event("userLoggedIn"));
 
       setSuccess("Đăng ký thành công! Đang chuyển hướng...");
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       // Xử lý lỗi Firebase
       if (err.code === "auth/email-already-in-use") {

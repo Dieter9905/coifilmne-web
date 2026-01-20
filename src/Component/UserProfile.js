@@ -24,7 +24,10 @@ function UserProfile({ currentUser }) {
       // Phát event để Navbar cập nhật
       window.dispatchEvent(new Event("userLoggedIn"));
       
-      navigate("/");
+      // Thêm delay nhỏ để đảm bảo localStorage đã cập nhật
+      setTimeout(() => {
+        navigate("/");
+      }, 100);
     } catch (err) {
       console.error("Logout error:", err);
     }
