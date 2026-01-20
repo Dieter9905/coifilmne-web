@@ -53,6 +53,9 @@ function Signup() {
         displayName: name
       }));
 
+      // Phát event để Navbar cập nhật
+      window.dispatchEvent(new Event("userLoggedIn"));
+
       setSuccess("Đăng ký thành công! Đang chuyển hướng...");
       setTimeout(() => navigate("/"), 2000);
     } catch (err) {

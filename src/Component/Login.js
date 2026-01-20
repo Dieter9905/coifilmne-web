@@ -28,11 +28,15 @@ function Login() {
       const user = userCredential.user;
       
       // Lưu user info vào localStorage
-      localStorage.setItem("currentUser", JSON.stringify({
+      const userData = {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName || email.split("@")[0]
-      }));
+      };
+      localStorage.setItem("currentUser", JSON.stringify(userData));
+      
+      // Phát event để Navbar cập nhật
+      window.dispatchEvent(new Event("userLoggedIn"));
       
       navigate("/");
     } catch (err) {

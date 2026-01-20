@@ -20,6 +20,10 @@ function UserProfile({ currentUser }) {
       await signOut(auth);
       localStorage.removeItem("currentUser");
       setShowDropdown(false);
+      
+      // Phát event để Navbar cập nhật
+      window.dispatchEvent(new Event("userLoggedIn"));
+      
       navigate("/");
     } catch (err) {
       console.error("Logout error:", err);

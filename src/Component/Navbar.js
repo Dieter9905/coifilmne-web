@@ -9,23 +9,39 @@ function Navbar() {
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Kiểm tra user đang login
+  // Hàm kiểm tra user
+  const checkUser = () => {
     const user = localStorage.getItem("currentUser");
     if (user) {
       setCurrentUser(JSON.parse(user));
+    } else {
+      setCurrentUser(null);
     }
+  };
+
+  useEffect(() => {
+    // Kiểm tra user đang login
+    checkUser();
   }, []);
 
   useEffect(() => {
     // Listen for storage changes (logout từ tab khác)
     const handleStorageChange = () => {
-      const user = localStorage.getItem("currentUser");
-      setCurrentUser(user ? JSON.parse(user) : null);
+      checkUser();
+    };
+
+    // Lắng nghe sự kiện custom "userLoggedIn" từ Login component
+    const handleUserLogin = () => {
+      checkUser();
     };
 
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener("userLoggedIn", handleUserLogin);
+    
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("userLoggedIn", handleUserLogin);
+    };
   }, []);
 
   const handleSearch = (e) => {
