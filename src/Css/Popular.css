@@ -1,0 +1,25 @@
+.popular-section {
+  padding: 20px;
+  color: white;
+}
+
+.popular-section h2 {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  padding: 0 0px;
+}
+
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .popular-section h2 {
+    font-size: 22px;
+  }
+}
+

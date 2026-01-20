@@ -1,0 +1,22 @@
+.movie-section {
+  padding: 20px;
+  color: white;
+}
+
+.movie-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+}
+
+.movie-row::-webkit-scrollbar {
+  height: 6px;
+}
+
+.movie-row::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+}

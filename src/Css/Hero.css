@@ -1,0 +1,95 @@
+.hero {
+  position: relative;
+  height: 520px;
+  margin: 30px;
+  border-radius: 20px;
+  background-image: url("https://image.tmdb.org/t/p/original/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* overlay đen */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.85),
+    rgba(0,0,0,0.4),
+    rgba(0,0,0,0.1)
+  );
+}
+
+/* content */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  padding: 80px 60px;
+  color: #fff;
+}
+
+.badge {
+  background-color: #ef4444;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+/* title */
+.hero-content h1 {
+  font-size: 48px;
+  margin: 20px 0;
+  line-height: 1.2;
+}
+
+/* info */
+.movie-info {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.tag {
+  background-color: #1f2933;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+/* description */
+.description {
+  font-size: 15px;
+  color: #d1d5db;
+  margin-bottom: 25px;
+}
+
+/* buttons */
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-play {
+  background-color: #ef4444;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-info {
+  background-color: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 12px 22px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-play:hover,
+.btn-info:hover {
+  opacity: 0.85;
+}

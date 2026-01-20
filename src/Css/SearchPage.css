@@ -1,0 +1,60 @@
+.search-page {
+  padding: 30px 60px;
+  color: #fff;
+}
+
+.search-title {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.search-title span {
+  color: #facc15;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  background: #1f2937;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.movie-info {
+  padding: 10px;
+}
+
+.movie-info h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.movie-info p {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.rating {
+  font-size: 14px;
+  color: #facc15;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+}
