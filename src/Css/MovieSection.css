@@ -20,3 +20,58 @@
   background: #555;
   border-radius: 10px;
 }
+/* RESPONSIVE DESIGN */
+@media (max-width: 1400px) {
+  .movie-section {
+    padding: 18px;
+  }
+
+  .movie-row {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .movie-section {
+    padding: 16px;
+  }
+
+  .movie-row {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-section {
+    padding: 14px;
+  }
+
+  .movie-row {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-section {
+    padding: 12px;
+  }
+
+  .movie-row {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .movie-section {
+    padding: 10px;
+  }
+
+  .movie-row {
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 8px;
+  }
+}

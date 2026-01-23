@@ -151,14 +151,21 @@
 }
 
 @media (max-width: 600px) {
+  .auth-container {
+    min-height: calc(100vh - 60px);
+    padding: 30px 15px;
+    margin-top: 60px;
+  }
+
   .auth-box {
-    padding: 40px 30px;
+    padding: 40px 25px;
     max-width: 100%;
+    border-radius: 12px;
   }
 
   .auth-box h1 {
-    font-size: 28px;
-    margin-bottom: 30px;
+    font-size: 26px;
+    margin-bottom: 28px;
   }
 
   .form-group {
@@ -166,35 +173,121 @@
   }
 
   .form-group label {
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 8px;
   }
 
   .form-group input {
+    padding: 11px 13px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .auth-button {
     padding: 12px 14px;
     font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .error-message,
+  .success-message {
+    padding: 12px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .auth-link {
+    margin-top: 24px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
   .auth-container {
-    padding: 20px;
+    min-height: calc(100vh - 60px);
+    padding: 20px 10px;
+    margin-top: 60px;
   }
 
   .auth-box {
-    padding: 30px 20px;
+    padding: 25px 15px;
+    border-radius: 10px;
   }
 
   .auth-box h1 {
-    font-size: 24px;
-    margin-bottom: 24px;
+    font-size: 22px;
+    margin-bottom: 20px;
   }
 
   .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .form-group input {
+    padding: 10px 11px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .auth-button {
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-top: 8px;
+    border-radius: 6px;
+  }
+
+  .error-message,
+  .success-message {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
   }
 
   .auth-link {
-    margin-top: 20px;
-    font-size: 14px;
+    margin-top: 18px;
+    font-size: 12px;
+  }
+
+  .auth-link a {
+    margin-left: 2px;
+  }
+}
+
+@media (max-width: 360px) {
+  .auth-container {
+    padding: 15px 8px;
+  }
+
+  .auth-box {
+    padding: 20px 12px;
+  }
+
+  .auth-box h1 {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 11px;
+  }
+
+  .form-group input {
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+
+  .auth-button {
+    padding: 9px 10px;
+    font-size: 12px;
   }
 }

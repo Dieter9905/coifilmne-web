@@ -22,3 +22,81 @@
   padding: 10px;
   color: #fff;
 }
+/* RESPONSIVE DESIGN */
+@media (max-width: 1400px) {
+  .movie-card {
+    flex: 0 0 160px;
+    width: 160px;
+  }
+
+  .movie-card img {
+    height: 240px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .movie-card {
+    flex: 0 0 150px;
+    width: 150px;
+  }
+
+  .movie-card img {
+    height: 225px;
+  }
+
+  .movie-info {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-card {
+    flex: 0 0 130px;
+    width: 130px;
+  }
+
+  .movie-card img {
+    height: 195px;
+  }
+
+  .movie-info {
+    padding: 7px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-card {
+    flex: 0 0 110px;
+    width: 110px;
+  }
+
+  .movie-card img {
+    height: 165px;
+  }
+
+  .movie-info {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .movie-card:hover {
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 360px) {
+  .movie-card {
+    flex: 0 0 95px;
+    width: 95px;
+  }
+
+  .movie-card img {
+    height: 142px;
+  }
+
+  .movie-info {
+    padding: 5px;
+    font-size: 11px;
+  }
+}

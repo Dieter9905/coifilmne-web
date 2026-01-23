@@ -17,9 +17,66 @@
   gap: 18px;
 }
 
-@media (max-width: 768px) {
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+  .popular-section {
+    padding: 18px;
+  }
+
   .popular-section h2 {
-    font-size: 22px;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .popular-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
   }
 }
 
+@media (max-width: 768px) {
+  .popular-section {
+    padding: 15px;
+  }
+
+  .popular-section h2 {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+  .popular-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popular-section {
+    padding: 12px;
+  }
+
+  .popular-section h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .popular-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .popular-section {
+    padding: 10px;
+  }
+
+  .popular-section h2 {
+    font-size: 16px;
+  }
+
+  .popular-grid {
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 8px;
+  }
+}

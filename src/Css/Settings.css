@@ -148,6 +148,149 @@
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 30px 15px;
+    min-height: calc(100vh - 70px);
+  }
+
+  .settings-box {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
+
+  .settings-box h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .settings-section {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .settings-section h2 {
+    font-size: 15px;
+  }
+
+  .form-group input {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+  }
+
+  .settings-btn {
+    padding: 11px;
+    font-size: 13px;
+  }
+
+  .info-item {
+    padding: 10px 0;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .info-label {
+    font-size: 13px;
+  }
+
+  .info-value {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-container {
+    padding: 20px 10px;
+  }
+
+  .settings-box {
+    padding: 20px 15px;
+    border-radius: 10px;
+  }
+
+  .settings-box h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .settings-section {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .settings-section h2 {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group label {
+    font-size: 11px;
+    margin-bottom: 5px;
+  }
+
+  .form-group input {
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+
+  .settings-btn {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .message {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .info-item {
+    padding: 8px 0;
+  }
+
+  .info-label {
+    font-size: 12px;
+  }
+
+  .info-value {
+    font-size: 13px;
+  }
+}
+
+.language-select {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #0f1419;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.language-select:hover {
+  border-color: #ff3b3b;
+}
+
+.language-select:focus {
+  outline: none;
+  border-color: #ff3b3b;
+  box-shadow: 0 0 8px rgba(255, 59, 59, 0.3);
+}
+
+.language-select option {
+  background-color: #0f1419;
+  color: white;
+}
+
 @media (max-width: 600px) {
   .settings-container {
     padding: 20px 15px;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase-config";
 import { updatePassword, updateProfile } from "firebase/auth";
+import { t, getLanguage, setLanguage } from "../i18n/translations";
 import "../Css/Settings.css";
 
 function Settings() {
@@ -11,6 +12,7 @@ function Settings() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [language, setLanguageState] = useState(getLanguage());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,10 +41,10 @@ function Settings() {
         const updatedUser = { ...currentUser, displayName };
         localStorage.setItem("currentUser", JSON.stringify(updatedUser));
         setCurrentUser(updatedUser);
-        setMessage("Cập nhật tên thành công!");
+        setMessage(t("settings.updateSuccess"));
       }
     } catch (err) {
-      setMessage("Cập nhật thất bại: " + err.message);
+      setMessage(t("settings.updateError") + err.message);
     } finally {
       setLoading(false);
     }
@@ -52,17 +54,17 @@ function Settings() {
     e.preventDefault();
     
     if (!newPassword || !confirmPassword) {
-      setMessage("Vui lòng điền đầy đủ mật khẩu");
+      setMessage(t("settings.fillAllFields"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setMessage("Mật khẩu không khớp");
+      setMessage(t("settings.passwordMatch"));
       return;
     }
 
     if (newPassword.length < 6) {
-      setMessage("Mật khẩu phải có ít nhất 6 ký tự");
+      setMessage(t("settings.passwordMinLength"));
       return;
     }
 
@@ -72,19 +74,26 @@ function Settings() {
     try {
       if (auth.currentUser) {
         await updatePassword(auth.currentUser, newPassword);
-        setMessage("Cập nhật mật khẩu thành công!");
+        setMessage(t("settings.passwordSuccess"));
         setNewPassword("");
         setConfirmPassword("");
       }
     } catch (err) {
       if (err.code === "auth/requires-recent-login") {
-        setMessage("Vui lòng đăng nhập lại để đổi mật khẩu");
+        setMessage(t("settings.recentLoginRequired"));
       } else {
-        setMessage("Cập nhật mật khẩu thất bại: " + err.message);
+        setMessage(t("settings.passwordError") + err.message);
       }
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLanguageChange = (e) => {
+    const newLang = e.target.value;
+    setLanguageState(newLang);
+    setLanguage(newLang);
+    window.location.reload(); // Reload to apply language changes
   };
 
   if (!currentUser) return null;
@@ -92,18 +101,37 @@ function Settings() {
   return (
     <div className="settings-container">
       <div className="settings-box">
-        <h1>⚙️ Settings</h1>
+        <h1>{t("settings.title")}</h1>
 
-        {message && <div className={`message ${message.includes("thành công") ? "success" : "error"}`}>
+        {message && <div className={`message ${message.includes(t("common.success")) || message.includes("success") || message.includes("thành công") ? "success" : "error"}`}>
           {message}
         </div>}
 
+        {/* Language Selection Section */}
+        <div className="settings-section">
+          <h2>{t("settings.language")}</h2>
+          <form>
+            <div className="form-group">
+              <label htmlFor="language">{t("settings.selectLanguage")}</label>
+              <select 
+                id="language"
+                value={language} 
+                onChange={handleLanguageChange}
+                className="language-select"
+              >
+                <option value="en">English</option>
+                <option value="vi">Tiếng Việt</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
         {/* Update Profile Section */}
         <div className="settings-section">
-          <h2>Thông tin tài khoản</h2>
+          <h2>{t("settings.profileSettings")}</h2>
           <form onSubmit={handleUpdateProfile}>
             <div className="form-group">
-              <label>Email</label>
+              <label>{t("auth.email")}</label>
               <input 
                 type="email" 
                 value={currentUser.email} 
@@ -113,61 +141,61 @@ function Settings() {
             </div>
 
             <div className="form-group">
-              <label>Tên hiển thị</label>
+              <label>{t("settings.displayName")}</label>
               <input
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="Nhập tên của bạn"
+                placeholder={t("settings.displayName")}
               />
             </div>
 
             <button type="submit" disabled={loading} className="settings-btn">
-              {loading ? "Đang xử lý..." : "Lưu thông tin"}
+              {loading ? t("common.loading") : t("settings.updateBtn")}
             </button>
           </form>
         </div>
 
         {/* Update Password Section */}
         <div className="settings-section">
-          <h2>Đổi mật khẩu</h2>
+          <h2>{t("settings.changePassword")}</h2>
           <form onSubmit={handleUpdatePassword}>
             <div className="form-group">
-              <label>Mật khẩu mới</label>
+              <label>{t("settings.newPassword")}</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Nhập mật khẩu mới"
+                placeholder={t("settings.newPassword")}
               />
             </div>
 
             <div className="form-group">
-              <label>Xác nhận mật khẩu</label>
+              <label>{t("settings.confirmPassword")}</label>
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Xác nhận mật khẩu"
+                placeholder={t("settings.confirmPassword")}
               />
             </div>
 
             <button type="submit" disabled={loading} className="settings-btn">
-              {loading ? "Đang xử lý..." : "Đổi mật khẩu"}
+              {loading ? t("common.loading") : t("settings.changeBtn")}
             </button>
           </form>
         </div>
 
         {/* Account Info */}
         <div className="settings-section">
-          <h2>Thông tin tài khoản</h2>
+          <h2>{t("settings.profileSettings")}</h2>
           <div className="info-item">
-            <span className="info-label">Email:</span>
+            <span className="info-label">{t("auth.email")}:</span>
             <span className="info-value">{currentUser.email}</span>
           </div>
           <div className="info-item">
-            <span className="info-label">Tên hiển thị:</span>
-            <span className="info-value">{currentUser.displayName || "Chưa cập nhật"}</span>
+            <span className="info-label">{t("settings.displayName")}:</span>
+            <span className="info-value">{currentUser.displayName || t("common.loading")}</span>
           </div>
         </div>
       </div>

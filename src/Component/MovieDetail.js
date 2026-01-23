@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { getMovieDetails, getMovieRecommendations, IMAGE_BASE_URL } from "../services/tmdbApi";
+import { getVietsub, convertSrtToVtt, getSubtitleBlobUrl } from "../services/subtitleService";
+import { t } from "../i18n/translations";
 import MovieCard from "./MovieCard";
 import "../Css/MovieDetail.css";
 
@@ -14,6 +16,9 @@ function MovieDetail() {
   const [trailer, setTrailer] = useState(null);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [playerMode, setPlayerMode] = useState("trailer"); // "trailer" or "vidsrc"
+  const [showSubtitle, setShowSubtitle] = useState(true); // Add subtitle toggle
+  const [subtitleUrl, setSubtitleUrl] = useState(null); // Subtitle blob URL
+  const [loadingSubtitle, setLoadingSubtitle] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -35,6 +40,11 @@ function MovieDetail() {
           if (youtubeTrailer) {
             setTrailer(youtubeTrailer);
           }
+        }
+
+        // Tìm vietsub
+        if (movieData.title && movieData.release_date) {
+          fetchVietsub(movieData.title, movieData.release_date.split('-')[0]);
         }
 
         // Thêm vào watch history
@@ -63,17 +73,42 @@ function MovieDetail() {
       });
   }, [id]);
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (!movie) return <div className="loading">Movie not found</div>;
+  const fetchVietsub = async (title, year) => {
+    setLoadingSubtitle(true);
+    try {
+      const subtitleData = await getVietsub(title, year);
+      if (subtitleData && subtitleData.url) {
+        // Fetch subtitle file
+        const response = await fetch(subtitleData.url);
+        let content = await response.text();
+        
+        // Convert SRT to VTT if needed
+        if (content.includes('-->') && !content.startsWith('WEBVTT')) {
+          content = convertSrtToVtt(content);
+        }
+        
+        // Create blob URL
+        const blobUrl = getSubtitleBlobUrl(content);
+        setSubtitleUrl(blobUrl);
+        console.log('Vietsub loaded successfully');
+      }
+    } catch (error) {
+      console.log('Error loading vietsub:', error);
+    }
+    setLoadingSubtitle(false);
+  };
+
+  if (loading) return <div className="loading">{t("movieDetail.loading")}</div>;
+  if (!movie) return <div className="loading">{t("movieDetail.notFound")}</div>;
 
   const director = movie.credits?.crew?.find((c) => c.job === "Director");
   const cast = movie.credits?.cast?.slice(0, 5) || [];
-  const vidsrcUrl = `https://vidsrc.me/embed/movie/${id}`;
+  const vidsrcUrl = `https://vidsrc.me/embed/movie/${id}${showSubtitle ? "?sub=1" : ""}`;
 
   return (
     <div className="movie-detail">
       <button className="back-btn" onClick={() => navigate(-1)}>
-        ← Back
+        {t("movieDetail.back")}
       </button>
 
       {isPlayerOpen && (
@@ -101,10 +136,30 @@ function MovieDetail() {
                   }}
                 />
               ) : (
-                <div className="player-no-content">Không có trailer</div>
+                <div className="player-no-content">{t("movieDetail.noTrailer")}</div>
               )
+            ) : subtitleUrl && showSubtitle ? (
+              <video
+                key={`${id}-${showSubtitle}`}
+                width="100%"
+                height="100%"
+                controls
+                autoPlay
+                className="vidsrc-player"
+              >
+                <source src={vidsrcUrl.split('?')[0]} type="video/mp4" />
+                <track
+                  kind="subtitles"
+                  src={subtitleUrl}
+                  srcLang="vi"
+                  label="Vietsub"
+                  default
+                />
+                {t("movieDetail.noTrailer")}
+              </video>
             ) : (
               <iframe
+                key={`${id}-${showSubtitle}`}
                 src={vidsrcUrl}
                 width="100%"
                 height="100%"
@@ -121,15 +176,26 @@ function MovieDetail() {
                   className={`player-tab ${playerMode === "trailer" ? "active" : ""}`}
                   onClick={() => setPlayerMode("trailer")}
                 >
-                  📹 Trailer
+                  {t("movieDetail.trailer")}
                 </button>
               )}
               <button
                 className={`player-tab ${playerMode === "vidsrc" ? "active" : ""}`}
                 onClick={() => setPlayerMode("vidsrc")}
               >
-                ▶ Xem Phim
+                {t("movieDetail.watchMovie")}
               </button>
+              {playerMode === "vidsrc" && (
+                <button
+                  className={`player-tab ${showSubtitle && subtitleUrl ? "active" : ""}`}
+                  onClick={() => setShowSubtitle(!showSubtitle)}
+                  title={showSubtitle ? t("movieDetail.disableSubtitle") : t("movieDetail.enableSubtitle")}
+                  disabled={loadingSubtitle || !subtitleUrl}
+                  style={{ opacity: subtitleUrl ? 1 : 0.5, cursor: subtitleUrl ? "pointer" : "not-allowed" }}
+                >
+                  {loadingSubtitle ? "⏳" : t("movieDetail.vietsub")}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -162,7 +228,7 @@ function MovieDetail() {
           <div className="detail-meta">
             <span className="rating">⭐ {movie.vote_average?.toFixed(1)}</span>
             <span className="year">📅 {movie.release_date?.slice(0, 4)}</span>
-            <span className="runtime">⏱ {movie.runtime} phút</span>
+            <span className="runtime">{t("movieDetail.duration")} {movie.runtime} {t("movieDetail.minutes")}</span>
           </div>
 
           <div className="genres">
@@ -174,20 +240,20 @@ function MovieDetail() {
           </div>
 
           <div className="description">
-            <h3>Nội dung</h3>
+            <h3>{t("movieDetail.content")}</h3>
             <p>{movie.overview}</p>
           </div>
 
           {director && (
             <div className="director">
-              <h4>Đạo diễn:</h4>
+              <h4>{t("movieDetail.director")}</h4>
               <p>{director.name}</p>
             </div>
           )}
 
           {cast.length > 0 && (
             <div className="cast">
-              <h4>Diễn viên:</h4>
+              <h4>{t("movieDetail.cast")}</h4>
               <div className="cast-list">
                 {cast.map((actor) => (
                   <span key={actor.id}>{actor.name}</span>
@@ -197,25 +263,29 @@ function MovieDetail() {
           )}
 
           <div className="action-buttons">
-            <button
-              className="play-movie-btn"
-              onClick={() => {
-                setIsPlayerOpen(true);
-                setPlayerMode("vidsrc");
-              }}
-            >
-              ▶ Xem Phim
-            </button>
-            {trailer && (
-              <button
-                className="watch-trailer-btn"
-                onClick={() => {
-                  setIsPlayerOpen(true);
-                  setPlayerMode("trailer");
-                }}
-              >
-                📹 Xem Trailer
-              </button>
+            {!isPlayerOpen && (
+              <>
+                <button
+                  className="play-movie-btn"
+                  onClick={() => {
+                    setIsPlayerOpen(true);
+                    setPlayerMode("vidsrc");
+                  }}
+                >
+                  {t("movieDetail.watchMovie")}
+                </button>
+                {trailer && (
+                  <button
+                    className="watch-trailer-btn"
+                    onClick={() => {
+                      setIsPlayerOpen(true);
+                      setPlayerMode("trailer");
+                    }}
+                  >
+                    {t("movieDetail.trailer")}
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -223,7 +293,7 @@ function MovieDetail() {
 
       {recommendations.length > 0 && (
         <div className="recommendations-section">
-          <h2>Phim Liên Quan</h2>
+          <h2>{t("movieDetail.relatedMovies")}</h2>
           <div className="recommendations-grid">
             {recommendations.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
